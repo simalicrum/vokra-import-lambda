@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: vokra-import-lambda
+Transform:
+- AWS::Serverless-2016-10-31
+Resources:
+  ScheduledEventLogger:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: A Lambda function that logs the payload of messages sent to an
+        associated SQS queue.
+      Runtime: nodejs14.x
+      Architectures:
+      - x86_64
+      Handler: src/handlers/scheduled-event-logger.scheduledEventLoggerHandler
+      Events:
+        CloudWatchEvent:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 * * * ? *)
+      MemorySize: 128
+      Timeout: 100
+      CodeUri: ScheduledEventLogger
+    Metadata:
+      SamResourceId: ScheduledEventLogger
