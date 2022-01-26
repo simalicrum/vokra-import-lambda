@@ -2,26 +2,30 @@ import { CAT_FETCH_URL } from "./urls.js";
 import axios from "axios";
 
 export async function fetcher(url) {
-  let res;
-  let interval = 200;
-  do {
-    res = await axios.get(url, {
-      method: "GET",
-      headers: {
-        "X-API-Key": process.env.API_KEY,
-      },
-    });
-    if (res.status === 429) {
-      let timeout = await new Promise((resolve) =>
-        setTimeout(resolve, interval)
-      );
-    }
-    if (interval < 1600) {
-      interval *= 2;
-    }
-  } while (res.status === 429);
-  const resp = res.data;
-  return resp;
+  try {
+    let res;
+    let interval = 200;
+    do {
+      res = await axios.get(url, {
+        method: "GET",
+        headers: {
+          "X-API-Key": process.env.API_KEY,
+        },
+      });
+      if (res.status === 429) {
+        let timeout = await new Promise((resolve) =>
+          setTimeout(resolve, interval)
+        );
+      }
+      if (interval < 1600) {
+        interval *= 2;
+      }
+    } while (res.status === 429);
+    const resp = res.data;
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export const batchedFetches = async (
