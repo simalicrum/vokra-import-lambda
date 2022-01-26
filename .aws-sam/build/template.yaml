@@ -10,6 +10,8 @@ Resources:
         Variables:
           API_KEY:
             Ref: ApiKey
+          DGRAPH_PROD_CLIENT:
+            Ref: Dgraph
       Description: A Lambda function that imports cats, people and events from Shelterluv
         API into a Dgraph database
       Runtime: nodejs14.x
@@ -28,4 +30,6 @@ Resources:
       SamResourceId: ImportShelterluv
 Parameters:
   ApiKey:
+    Type: String
+  Dgraph:
     Type: String

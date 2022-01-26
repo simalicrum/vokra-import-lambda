@@ -1,12 +1,11 @@
 import { GraphQLClient, gql } from "graphql-request";
 
-const CLIENT_SECRET = process.env.DGRAPH_PROD_CLIENT;
-const FAUNA_GRAPHQL_BASE_URL =
+const GRAPHQL_BASE_URL =
   "https://throbbing-field-210043.us-west-2.aws.cloud.dgraph.io/graphql";
 
-const graphQLClient = new GraphQLClient(FAUNA_GRAPHQL_BASE_URL, {
+const graphQLClient = new GraphQLClient(GRAPHQL_BASE_URL, {
   headers: {
-    authorization: `Bearer ${CLIENT_SECRET}`,
+    "Dg-Auth": process.env.DGRAPH_PROD_CLIENT,
   },
 });
 
