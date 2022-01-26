@@ -8,7 +8,8 @@ Resources:
     Properties:
       Environment:
         Variables:
-          API_KEY: null
+          API_KEY:
+            Ref: ApiKey
       Description: A Lambda function that imports cats, people and events from Shelterluv
         API into a Dgraph database
       Runtime: nodejs14.x
@@ -20,8 +21,11 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: rate(10 minutes)
-      MemorySize: 128
+      MemorySize: 256
       Timeout: 600
       CodeUri: ImportShelterluv
     Metadata:
       SamResourceId: ImportShelterluv
+Parameters:
+  ApiKey:
+    Type: String

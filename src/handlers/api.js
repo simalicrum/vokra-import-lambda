@@ -1,12 +1,30 @@
 import { CAT_FETCH_URL } from "./urls.js";
 import axios from "axios";
 
+const customAxios = axios.create();
+
+const responseHandler = (response) => {
+  return response;
+};
+
+const errorHandler = (error) => {
+  if (error.response.status === 429) {
+    return error.response;
+  }
+  return Promise.reject(error);
+};
+
+customAxios.interceptors.response.use(
+  (response) => responseHandler(response),
+  (error) => errorHandler(error)
+);
+
 export async function fetcher(url) {
   try {
     let res;
     let interval = 200;
     do {
-      res = await axios.get(url, {
+      res = await customAxios.get(url, {
         method: "GET",
         headers: {
           "X-API-Key": process.env.API_KEY,
